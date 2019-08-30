@@ -1,49 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Hotel_image</title>
-</head>
-<body  onload="init();">
-    <form method = "post" enctype="multipart/form-data" action="#">
-        {% csrf_token %}
-        <!--{{ form.as_p }}-->
-        <input type="hidden" name="name" value="gyusfdbvjhsdvjlnksd">
-        <input type="hidden" name="air_range" value="0">
-        <input type="file" name='hotel_Main_Img' >
-        <button type="submit">Upload</button>
-    </form>
+<html>
+    <head>
+    </head>
+    <body onload="init();">
+        <h1>Take a snapshot of the current video stream</h1>
+        Click on the Start WebCam button.
+        <p>
+            <button onclick="startWebcam();">Start WebCam</button>
+            <button onclick="stopWebcam();">Stop WebCam</button>
+            <button onclick="snapshot();">Take Snapshot</button>
+            <button onclick="saveShot();">Save Snapshot</button>
 
-<!--<video autoplay></video>
-<img src="">
-<canvas style="display:none;"></canvas>
+        <div>
+            <form action="#" method = "post" enctype="multipart/form-data">
+                        {% csrf_token %}
 
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, voluptas.
+
+                <img id="thisimage" src="" alt="Photo of You">
+                Screenshots : <p>
+                <canvas  id="myCanvas" width="400" height="350"></canvas>
+                <input type="image" name='hotel_Main_Img' id="thisimage">
+
+                <input type="submit" value="Go to page" >
+            </form>
+        </div>
+
+        </p>
+    <video onclick="snapshot(this);" width=400 height=400 id="video" controls autoplay></video>
+    <p>
+
+
+    </body>
 <script>
-const captureVideoButton =
-  document.querySelector('#screenshot .capture-button');
-const screenshotButton = document.querySelector('#screenshot-button');
-const img = document.querySelector('#screenshot img');
-const video = document.querySelector('#screenshot video');
+    //--------------------
+    // GET USER MEDIA CODE
+    //--------------------
+    navigator.getUserMedia = ( navigator.getUserMedia ||
+                              navigator.webkitGetUserMedia ||
+                              navigator.mozGetUserMedia ||
+                              navigator.msGetUserMedia);
 
-const canvas = document.createElement('canvas');
+    var video;
+    var webcamStream;
 
-captureVideoButton.onclick = function() {
-  navigator.mediaDevices.getUserMedia(constraints).
-    then(handleSuccess).catch(handleError);
-};
+    function startWebcam() {
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia (
 
-screenshotButton.onclick = video.onclick = function() {
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  // Other browsers will fall back to image/png
-  img.src = canvas.toDataURL('image/webp');
-};
+                // constraints
+                {
+                    video: true,
+                    audio: false
+                },
 
-function handleSuccess(stream) {
-  screenshotButton.disabled = false;
-  video.srcObject = stream;
-}
-</script>-->
-</body>
+                // successCallback
+                function(localMediaStream) {
+                    video = document.querySelector('video');
+                    video.srcObject = localMediaStream;
+                    webcamStream = localMediaStream;
+                },
+
+                // errorCallback
+                function(err) {
+                    console.log("The following error occured: " + err);
+                }
+            );
+        } else {
+            console.log("getUserMedia not supported");
+        }
+    }
+
+    function stopWebcam() {
+        webcamStream.stop();
+    }
+    //---------------------
+    // TAKE A SNAPSHOT CODE
+    //---------------------
+    var canvas, ctx, img1;
+
+    function init() {
+        // Get the canvas and obtain a context for
+        // drawing in it
+        canvas = document.getElementById("myCanvas");
+        ctx = canvas.getContext('2d');
+    }
+
+    function snapshot() {
+        // Draws current image from the video element into the canvas
+        ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+        var image1 = document.getElementById("thisimage");
+        image.setAttribute('src', canvas.toDataUrl('image/png'));
+    }
+
+</script>
 </html>

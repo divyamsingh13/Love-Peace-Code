@@ -6,16 +6,28 @@ from .forms import *
 # Create your views here.
 def index(request):
     if request.method=='POST':
-        form=HotelForm(request.POST,request.FILES)
+        form=IndexForm(request.POST,request.FILES)
         print(form.errors)
         if form.is_valid():
             # name_received, accuracy = scriptToBeCalled(form.cleaned_data.get("hotel_Main_Img"))
             print("valid")
             name_received="a"
             hotel=Hotel.objects.filter(name=name_received)
-            return HttpResponse(hotel[0].name)
+            hotel=hotel[0]
+            if(hotel.attendance):
+                message="Attendance already marked"
+            else:
+                hotel.attendance=True
+                message="Attendance marked"
+                hotel.save()
+            attendance=""
+            for i in hotel.ailments.all():
+                print(i.get_disease_display())
+            print(hotel.ailments.all())
+            return render(request, 'success.html', {"message": message,"attendance":attendance})
+
     else:
-        form=HotelForm()
+        form=IndexForm()
     return render(request, 'index.html', {'form': form})
 
 

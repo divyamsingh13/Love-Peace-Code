@@ -4,9 +4,11 @@ from django.db import models
 
 class Ailments(models.Model):
     TYPES=(
-        ("1","cancer"),
-        ("2","tb"),
-        ("3","hayabusa"),
+        ("1","influenza"),
+        ("2","pneumonia"),
+        ("3","asthma"),
+        ("4", "bronchitis"),
+        ("5", "tb"),
     )
     disease=models.CharField(max_length=50,choices=TYPES,blank=True)
 
@@ -16,3 +18,5 @@ class Hotel(models.Model):
     hotel_Main_Img = models.ImageField(upload_to='images/')
     air_range=models.IntegerField(null=True)
     ailments=models.ManyToManyField(Ailments)
+    attendance=models.BooleanField(default=False)
+    email=models.EmailField(null=True)

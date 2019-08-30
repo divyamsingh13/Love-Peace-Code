@@ -11,24 +11,25 @@ def index(request):
         if form.is_valid():
             # name_received, accuracy = scriptToBeCalled(form.cleaned_data.get("hotel_Main_Img"))
             print("valid")
-            name_received="a"
+            name_received="c"
             hotel=Hotel.objects.filter(name=name_received)
             hotel=hotel[0]
-            if(hotel.attendance):
+            if(hotel.attendance==1):
                 message="Attendance already marked"
             else:
                 hotel.attendance=True
                 message="Attendance marked"
                 hotel.save()
-            attendance=""
+            noOfDiseases = len(hotel.ailments.all())
+
             for i in hotel.ailments.all():
                 print(i.get_disease_display())
-            print(hotel.ailments.all())
-            return render(request, 'success.html', {"message": message,"attendance":attendance})
+            print(len(hotel.ailments.all()))
+            return render(request, 'success.html', {"message": message,"disease":noOfDiseases})
 
     else:
         form=IndexForm()
-    return render(request, 'index.html', {'form': form})
+    return render(request, 'index1.html', {'form': form})
 
 
 
@@ -36,11 +37,27 @@ def index(request):
 def hotel_image_view(request):
     if request.method == 'POST':
         form = HotelForm(request.POST, request.FILES)
-
+        print(form.errors)
         if form.is_valid():
-            form.save()
+            hotel=form.save()
+            noOfDiseases = len(hotel.ailments.all())
+            disease = noOfDiseases
+            air_index = 200
+            if (noOfDiseases == 0):
+                air_index = 200
+            elif (noOfDiseases == 1):
+                air_index = 175
+            elif (noOfDiseases == 2):
+                air_index = 150
+            elif (noOfDiseases == 3):
+                air_index = 125
+            elif (noOfDiseases == 4):
+                air_index = 100
+            elif (noOfDiseases == 5):
+                air_index = 75
+            hotel.air_range=air_index
             print(form.cleaned_data.get('name'),form.cleaned_data.get('hotel_Main_Img'))
-
+            hotel.save()
             # if(accuracy>.80):
             #     return redirect('success')
             # else:

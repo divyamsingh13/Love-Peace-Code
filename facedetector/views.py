@@ -14,21 +14,26 @@ def index(request):
             print("valid")
             print(form.cleaned_data['hotel_Main_Img'])
             name_received,accuracy=predict(form.cleaned_data['hotel_Main_Img'])
-            hotel=Hotel.objects.filter(name=name_received)
-            hotel=hotel[0]
-            if(hotel.attendance==1):
-                message="Attendance already marked"
-            else:
-                hotel.attendance=True
-                message="Attendance marked"
-                hotel.save()
-            noOfDiseases = len(hotel.ailments.all())
-            diseases=[]
-            for i in hotel.ailments.all():
-                diseases.append(i.get_disease_display())
-            print("no",noOfDiseases)
+            print("name",name_received,accuracy)
 
-            return render(request, 'success.html', {"message": message,"noOfDiseases":noOfDiseases,"diseases":diseases})
+            if(not(name_received=="")):
+                hotel = Hotel.objects.filter(name=name_received)
+                hotel = hotel[0]
+                if(hotel.attendance==1):
+                    message="Attendance already marked"
+                else:
+                    hotel.attendance=True
+                    message="Attendance marked"
+                    hotel.save()
+                noOfDiseases = len(hotel.ailments.all())
+                diseases=[]
+                for i in hotel.ailments.all():
+                    diseases.append(i.get_disease_display())
+                print("no",noOfDiseases)
+                return render(request, 'success.html', {"message": message,"noOfDiseases":noOfDiseases,"diseases":diseases})
+            else:
+                return render(request, 'unsuccess.html')
+
 
     else:
         form=IndexForm()

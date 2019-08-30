@@ -6,5 +6,11 @@
 </head>
 <body>
         your face is not identified
+        {% load static %}
+        <script>
+            var csvdata = '{% static "aqi.csv" %}'
+        </script>
+        <script src="{% static 'd3.min.js' %}"></script>
+        <script src="{% static 'main.js' %}"></script>
 </body>
 </html>

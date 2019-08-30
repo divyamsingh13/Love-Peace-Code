@@ -54,12 +54,12 @@ def get_embedding(model, face_pixels):
     return yhat[0]
 
 def predict(image):
-    filename = 'D:/facedetect/facedetection/facedetector/finalized_model.sav'
+    filename = 'C:/Users/anchal.chaudhary/Desktop/hackathon/Love-Peace-Code/facedetector/finalized_model.sav'
     model_svm = pickle.load(open(filename, 'rb'))
 
     extracted_face=extract_face(image)
     
-    model = load_model('D:/facedetect/facedetection/facedetector/facenet_keras.h5')
+    model = load_model('C:/Users/anchal.chaudhary/Desktop/hackathon/Love-Peace-Code/facedetector/facenet_keras.h5')
     face_emmbed = get_embedding(model, extracted_face)
     
     face_emmbed = asarray(face_emmbed)

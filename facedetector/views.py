@@ -1,10 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from pip._vendor import requests
+
 from .forms import *
 from .function import *
 
 
 # Create your views here.
+API_URL="http://localhost:5000/predict"
 def index(request):
     if request.method=='POST':
         form=IndexForm(request.POST,request.FILES)
@@ -13,11 +16,22 @@ def index(request):
             # name_received, accuracy = scriptToBeCalled(form.cleaned_data.get("hotel_Main_Img"))
             print("valid")
             print(form.cleaned_data['hotel_Main_Img'])
-            name_received,accuracy=predict(form.cleaned_data['hotel_Main_Img'])
+            image=form.cleaned_data['hotel_Main_Img']
+            payload={"image":image}
+            request1=requests.post(API_URL,files=payload).json()
+            print(request1)
+            name_received=""
+            accuracy=0
+            if(request1):
+                name_received=request1["label"]
+                accuracy=request1["probability"]
+
+            # predict(form.cleaned_data['hotel_Main_Img'])
             print("name",name_received,accuracy)
 
             if(not(name_received=="")):
                 hotel = Hotel.objects.filter(name=name_received)
+                print(hotel)
                 hotel = hotel[0]
                 if(hotel.attendance==1):
                     message="Attendance already marked"

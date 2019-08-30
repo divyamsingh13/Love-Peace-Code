@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import *
+from .function import *
 
 
 # Create your views here.
@@ -11,7 +12,8 @@ def index(request):
         if form.is_valid():
             # name_received, accuracy = scriptToBeCalled(form.cleaned_data.get("hotel_Main_Img"))
             print("valid")
-            name_received="c"
+            print(form.cleaned_data['hotel_Main_Img'])
+            name_received,accuracy=predict(form.cleaned_data['hotel_Main_Img'])
             hotel=Hotel.objects.filter(name=name_received)
             hotel=hotel[0]
             if(hotel.attendance==1):
@@ -21,11 +23,12 @@ def index(request):
                 message="Attendance marked"
                 hotel.save()
             noOfDiseases = len(hotel.ailments.all())
-
+            diseases=[]
             for i in hotel.ailments.all():
-                print(i.get_disease_display())
-            print(len(hotel.ailments.all()))
-            return render(request, 'success.html', {"message": message,"disease":noOfDiseases})
+                diseases.append(i.get_disease_display())
+            print("no",noOfDiseases)
+
+            return render(request, 'success.html', {"message": message,"noOfDiseases":noOfDiseases,"diseases":diseases})
 
     else:
         form=IndexForm()
@@ -58,11 +61,13 @@ def hotel_image_view(request):
             hotel.air_range=air_index
             print(form.cleaned_data.get('name'),form.cleaned_data.get('hotel_Main_Img'))
             hotel.save()
+            name=hotel.name
+
             # if(accuracy>.80):
             #     return redirect('success')
             # else:
             #     return redirect("hotel_image_view")
-            return HttpResponse("hello")
+            return render(request, 'image.html', {'form':name})
 
     else:
         form = HotelForm()

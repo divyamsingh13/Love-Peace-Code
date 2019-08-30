@@ -6,5 +6,12 @@
 </head>
 <body>
     {{message}}
+    no od diseases {{noOfDiseases}}
+    <div id="right_pod">
+{% for i in diseases %}
+    <div class="user_pod">
+        {{ i }}
+    </div>
+{% endfor %}
 </body>
 </html>

@@ -23,7 +23,8 @@ from django.conf.urls import include
 admin.autodiscover()
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', home, name='home'),
+    path('index', index , name='index'),
     path('image_upload', hotel_image_view, name='image_upload'),
     path('success', success, name='success'),
     path('hotel_images', display_hotel_images, name = 'hotel_images'),

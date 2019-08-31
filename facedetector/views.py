@@ -53,7 +53,8 @@ def index(request):
         form=IndexForm()
     return render(request, 'index1.html', {'form': form})
 
-
+def home(request):
+    return render(request,'home.html')
 
 
 def hotel_image_view(request):

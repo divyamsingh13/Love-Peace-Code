@@ -83,11 +83,11 @@ DATABASES = {
         # port number.
         'PORT': '3306',
         # database name.
-        'NAME': 'db',
+        'NAME': 'account',
         # user name.
         'USER': 'root',
         # password
-        'PASSWORD': 'Global@123',
+        'PASSWORD': 'hello!123',
         # connect options
         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",},
     }

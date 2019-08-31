@@ -1,0 +1,79 @@
+div{
+    width:100%;
+}
+
+body{
+	margin: 0;
+	width: 100%;
+	height: 100vh;
+	font-family: "Exo", sans-serif;
+}
+
+nav{
+    background-color: #061826;
+}
+
+footer {
+	position: fixed;
+
+    left: 0;
+    bottom: 0%;
+    height: 100px;
+    width: 100%;
+    background-color: #061826;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 15px;
+    margin: auto;
+    margin-right: -15px;
+}
+
+footer>p{
+	margin-bottom: 0px;
+}
+
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.gradient_container{
+    width: 100%;
+    text-align: center;
+        height: 593px;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradientBG 15s ease infinite;
+	color: #fff;
+    margin: auto;
+
+}
+
+.gradient_container> .container {
+	width: 100%;
+	position: inherit;
+	top: 35%;
+	text-align: center;
+}
+
+.section-2{
+
+background : #FFFFFA;
+height : 300px;
+margin: auto;
+
+}
+
+.img-section-2{
+
+    max-width: 50px;
+    max-height: 50px;
+}

@@ -12,5 +12,5 @@ class HotelForm(forms.ModelForm):
 class IndexForm(forms.ModelForm):
     class Meta:
         model = Hotel
-        fields = ['hotel_Main_Img']
+        fields=['hotel_Main_Img']
 

@@ -1,5 +1,10 @@
+import re
+
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
+from django.template import RequestContext
+from django.utils.baseconv import base64
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from pip._vendor import requests
 
 from .forms import *
@@ -8,9 +13,12 @@ from .function import *
 
 # Create your views here.
 API_URL="http://localhost:5000/predict"
+@csrf_exempt
 def index(request):
     if request.method=='POST':
-        form=IndexForm(request.POST,request.FILES)
+
+        form=IndexForm(request.POST)
+        print(form)
         print(form.errors)
         if form.is_valid():
             # name_received, accuracy = scriptToBeCalled(form.cleaned_data.get("hotel_Main_Img"))
@@ -47,11 +55,9 @@ def index(request):
                 return render(request, 'success.html', {"message": message,"noOfDiseases":noOfDiseases,"diseases":diseases})
             else:
                 return render(request, 'unsuccess.html')
-
-
     else:
         form=IndexForm()
-    return render(request, 'index1.html', {'form': form})
+    return render(request, 'index1.html',{'form':form})
 
 
 

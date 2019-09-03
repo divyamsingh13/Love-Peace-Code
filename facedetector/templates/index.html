@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
     </head>
     <body onload="init();">
         <h1>Take a snapshot of the current video stream</h1>
@@ -12,17 +16,12 @@
             <button onclick="saveShot();">Save Snapshot</button>
 
         <div>
-            <form action="#" method = "post" enctype="multipart/form-data">
-                        {% csrf_token %}
-
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, voluptas.
-
-                <img id="thisimage" src="" alt="Photo of You">
-                Screenshots : <p>
+            <form method = "post" enctype="multipart/form-data" action="">
+                {%csrf_token%}
+                <!--{{ form.as_p }}-->
                 <canvas  id="myCanvas" width="400" height="350"></canvas>
-                <input type="image" name='hotel_Main_Img' id="thisimage">
-
-                <input type="submit" value="Go to page" >
+                <input type="file" name='hotel_Main_Img' id="imgupload" style="display:none;">
+                <button type="submit" onclick="uploadimage();">Upload</button>
             </form>
         </div>
 
@@ -77,7 +76,8 @@
     //---------------------
     // TAKE A SNAPSHOT CODE
     //---------------------
-    var canvas, ctx, img1;
+    var canvas, ctx, img1, img;
+    var formdata = new FormData();
 
     function init() {
         // Get the canvas and obtain a context for
@@ -89,9 +89,28 @@
     function snapshot() {
         // Draws current image from the video element into the canvas
         ctx.drawImage(video, 0,0, canvas.width, canvas.height);
-        var image1 = document.getElementById("thisimage");
-        image.setAttribute('src', canvas.toDataUrl('image/png'));
-    }
+     //  var image1 = document.getElementById("thisimage");
+     //  image.setAttribute('src', canvas.toDataUrl('image/png'));
 
+      //  var canvas = document.getElementById("myCanvas");
+        var img = canvas.toDataURL("image/png");
+        formdata.append("hotel_Main_Img",img);
+       // var inp = document.getElementById("imgupload");
+        //inp.value = dataUrl;
+//        document.write('<img src="'+img+'"/>');
+    }
+    function uploadimage(){
+        //var formdata = new FormData();
+        //formdata.append("hotel_Main_Img",img);
+        console.log(formdata.getAll("hotel_Main_Img"));
+        $.ajax({
+            url:"",
+            type: "POST",
+            data: {hotel_Main_Img:formdata.getAll("hotel_Main_Img")},
+            processData: false,
+            contentType: false,
+            success:function(){ console.log("Done"); }
+        })
+    }
 </script>
 </html>
